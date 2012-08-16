@@ -1,0 +1,1 @@
+cmd_Release/Observable.node := ./gyp-mac-tool flock ./Release/linker.lock c++ -shared -Wl,-search_paths_first -mmacosx-version-min=10.5 -arch x86_64 -L./Release -install_name /usr/local/lib/Observable.node  -o Release/Observable.node Release/obj.target/Observable/src/Observable.o -L/opt/local/lib -lssl -lcrypto -undefined dynamic_lookup
