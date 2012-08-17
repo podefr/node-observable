@@ -14,7 +14,9 @@ Release/obj.target/Observable/src/Observable.o: ../src/Observable.cpp \
   /Users/olivierscherrer/.node-gyp/0.8.3/src/ev-emul.h \
   /Users/olivierscherrer/.node-gyp/0.8.3/src/eio-emul.h \
   ../src/../include/Observable.h \
-  /Users/olivierscherrer/.node-gyp/0.8.3/src/node_buffer.h
+  /Users/olivierscherrer/.node-gyp/0.8.3/src/req_wrap.h \
+  /Users/olivierscherrer/.node-gyp/0.8.3/src/ngx-queue.h \
+  /Users/olivierscherrer/.node-gyp/0.8.3/src/handle_wrap.h
 ../src/Observable.cpp:
 /Users/olivierscherrer/.node-gyp/0.8.3/src/node.h:
 /Users/olivierscherrer/.node-gyp/0.8.3/deps/uv/include/uv.h:
@@ -30,4 +32,6 @@ Release/obj.target/Observable/src/Observable.o: ../src/Observable.cpp \
 /Users/olivierscherrer/.node-gyp/0.8.3/src/ev-emul.h:
 /Users/olivierscherrer/.node-gyp/0.8.3/src/eio-emul.h:
 ../src/../include/Observable.h:
-/Users/olivierscherrer/.node-gyp/0.8.3/src/node_buffer.h:
+/Users/olivierscherrer/.node-gyp/0.8.3/src/req_wrap.h:
+/Users/olivierscherrer/.node-gyp/0.8.3/src/ngx-queue.h:
+/Users/olivierscherrer/.node-gyp/0.8.3/src/handle_wrap.h:

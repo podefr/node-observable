@@ -1,2 +1,5 @@
-hop = require("./build/Release/Observable").Observable;
-console.log((new hop).publish());
+var Observable = require("./build/Release/Observable").Observable,
+	observable = new Observable;
+
+observable.subscribe("hello");
+observable.subscribe("hi");
