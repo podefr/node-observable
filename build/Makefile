@@ -343,8 +343,8 @@ ifeq ($(strip $(foreach prefix,$(NO_LOAD),\
 endif
 
 quiet_cmd_regen_makefile = ACTION Regenerating $@
-cmd_regen_makefile = /Users/olivierscherrer/.node-gyp/0.8.3/tools/gyp_addon -fmake --ignore-environment "--toplevel-dir=." -I/Users/olivierscherrer/Documents/workspace/node-observable/build/config.gypi -I/Users/olivierscherrer/.node-gyp/0.8.3/tools/addon.gypi -I/Users/olivierscherrer/.node-gyp/0.8.3/common.gypi "--depth=." "-Goutput_dir=." "--generator-output=build" "-Dlibrary=shared_library" "-Dvisibility=default" "-Dnode_root_dir=/Users/olivierscherrer/.node-gyp/0.8.3" "-Dmodule_root_dir=/Users/olivierscherrer/Documents/workspace/node-observable" binding.gyp
-Makefile: $(srcdir)/../../../.node-gyp/0.8.3/tools/addon.gypi $(srcdir)/../../../.node-gyp/0.8.3/common.gypi $(srcdir)/build/config.gypi $(srcdir)/binding.gyp
+cmd_regen_makefile = /Users/olivierscherrer/.node-gyp/0.8.7/tools/gyp_addon -fmake --ignore-environment "--toplevel-dir=." -I/Users/olivierscherrer/Documents/workspace/node-observable/build/config.gypi -I/Users/olivierscherrer/.node-gyp/0.8.7/tools/addon.gypi -I/Users/olivierscherrer/.node-gyp/0.8.7/common.gypi "--depth=." "-Goutput_dir=." "--generator-output=build" "-Dlibrary=shared_library" "-Dvisibility=default" "-Dnode_root_dir=/Users/olivierscherrer/.node-gyp/0.8.7" "-Dmodule_root_dir=/Users/olivierscherrer/Documents/workspace/node-observable" binding.gyp
+Makefile: $(srcdir)/../../../.node-gyp/0.8.7/common.gypi $(srcdir)/build/config.gypi $(srcdir)/binding.gyp $(srcdir)/../../../.node-gyp/0.8.7/tools/addon.gypi
 	$(call do_cmd,regen_makefile)
 
 # "all" is a concatenation of the "all" targets from all the included

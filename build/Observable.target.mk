@@ -35,9 +35,9 @@ CFLAGS_OBJC_Debug :=
 CFLAGS_OBJCC_Debug := 
 
 INCS_Debug := -I/opt/local/include/openssl \
-	-I/Users/olivierscherrer/.node-gyp/0.8.3/src \
-	-I/Users/olivierscherrer/.node-gyp/0.8.3/deps/uv/include \
-	-I/Users/olivierscherrer/.node-gyp/0.8.3/deps/v8/include
+	-I/Users/olivierscherrer/.node-gyp/0.8.7/src \
+	-I/Users/olivierscherrer/.node-gyp/0.8.7/deps/uv/include \
+	-I/Users/olivierscherrer/.node-gyp/0.8.7/deps/v8/include
 
 DEFS_Release := '-D_LARGEFILE_SOURCE' \
 	'-D_FILE_OFFSET_BITS=64' \
@@ -70,11 +70,12 @@ CFLAGS_OBJC_Release :=
 CFLAGS_OBJCC_Release := 
 
 INCS_Release := -I/opt/local/include/openssl \
-	-I/Users/olivierscherrer/.node-gyp/0.8.3/src \
-	-I/Users/olivierscherrer/.node-gyp/0.8.3/deps/uv/include \
-	-I/Users/olivierscherrer/.node-gyp/0.8.3/deps/v8/include
+	-I/Users/olivierscherrer/.node-gyp/0.8.7/src \
+	-I/Users/olivierscherrer/.node-gyp/0.8.7/deps/uv/include \
+	-I/Users/olivierscherrer/.node-gyp/0.8.7/deps/v8/include
 
-OBJS := $(obj).target/$(TARGET)/src/Observable.o
+OBJS := $(obj).target/$(TARGET)/src/addon.o \
+	$(obj).target/$(TARGET)/src/Observable.o
 
 # Add to the list of files we specially track dependencies for.
 all_deps += $(OBJS)
@@ -89,12 +90,21 @@ $(OBJS): GYP_OBJCXXFLAGS := $(DEFS_$(BUILDTYPE)) $(INCS_$(BUILDTYPE))  $(CFLAGS_
 
 # Suffix rules, putting all outputs into $(obj).
 
+$(obj).$(TOOLSET)/$(TARGET)/%.o: $(srcdir)/%.cc FORCE_DO_CMD
+	@$(call do_cmd,cxx,1)
+
 $(obj).$(TOOLSET)/$(TARGET)/%.o: $(srcdir)/%.cpp FORCE_DO_CMD
 	@$(call do_cmd,cxx,1)
 
 # Try building from generated source, too.
 
+$(obj).$(TOOLSET)/$(TARGET)/%.o: $(obj).$(TOOLSET)/%.cc FORCE_DO_CMD
+	@$(call do_cmd,cxx,1)
+
 $(obj).$(TOOLSET)/$(TARGET)/%.o: $(obj).$(TOOLSET)/%.cpp FORCE_DO_CMD
+	@$(call do_cmd,cxx,1)
+
+$(obj).$(TOOLSET)/$(TARGET)/%.o: $(obj)/%.cc FORCE_DO_CMD
 	@$(call do_cmd,cxx,1)
 
 $(obj).$(TOOLSET)/$(TARGET)/%.o: $(obj)/%.cpp FORCE_DO_CMD

@@ -15,6 +15,7 @@
     ]
   },
   "variables": {
+    "clang": 1,
     "host_arch": "x64",
     "node_install_npm": "false",
     "node_install_waf": "true",
@@ -28,7 +29,7 @@
     "target_arch": "x64",
     "v8_no_strict_aliasing": 1,
     "v8_use_snapshot": "true",
-    "nodedir": "/Users/olivierscherrer/.node-gyp/0.8.3",
+    "nodedir": "/Users/olivierscherrer/.node-gyp/0.8.7",
     "copy_dev_lib": "true"
   }
 }
