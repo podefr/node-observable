@@ -7,13 +7,13 @@
 using namespace v8;
 
 struct Observer {
-	Local<String> topic;
-	Local<Function> callback;
+	Persistent<String> topic;
+	Persistent<Function> callback;
 };
 
 class Observable: public node::ObjectWrap {
 	public:
-		static void Init(Handle<Object> target);
+		static void Init(Handle<Object>);
 
 	private:
 		Observable();
@@ -21,7 +21,7 @@ class Observable: public node::ObjectWrap {
 
 		std::vector<Observer> observers;
 
-		static Handle<Value> New(const Arguments& args);
+		static Handle<Value> New(const Arguments&);
 		static Handle<Value> publish(const Arguments&);
 		static Handle<Value> subscribe(const Arguments&);
 

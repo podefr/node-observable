@@ -8,6 +8,8 @@ using namespace v8;
 Observable::Observable() {};
 Observable::~Observable() {};
 
+Persistent<Function> constructor;
+
 void Observable::Init( Handle<Object> target ) {
 
 	Local<FunctionTemplate> tpl = FunctionTemplate::New( New );
@@ -20,7 +22,7 @@ void Observable::Init( Handle<Object> target ) {
 	tpl->PrototypeTemplate()->Set(String::NewSymbol( "publish" ),
 		FunctionTemplate::New(publish)->GetFunction());
 
-	Persistent<Function> constructor = Persistent<Function>::New(tpl->GetFunction());
+	constructor = Persistent<Function>::New(tpl->GetFunction());
 	target->Set(name, constructor);
 
 }
@@ -37,21 +39,14 @@ Handle<Value> Observable::New( const Arguments& args ) {
 Handle<Value> Observable::subscribe( const Arguments& args ) {
 	HandleScope scope;
 
-	Observer observer;
-
 	Observable* obs = ObjectWrap::Unwrap<Observable>( args.This() );
 
-	observer.topic = args[0]->ToString();
-	observer.callback = Local<Function>::Cast( args[1] );
+	Observer observer;
+
+	observer.topic = Persistent<String>::New(args[0]->ToString());
+	observer.callback = Persistent<Function>::New( Local<Function>::Cast(args[1]) );
 
 	obs->observers.push_back( observer );
-
-	char test[10];
-
-	observer.topic->WriteAscii( test, 0, observer.topic->Length() );
-
-	std::cout << "\n" << "adding " << test << "\n";
-
 
 	return scope.Close( Undefined() );
 }
@@ -63,15 +58,12 @@ Handle<Value> Observable::publish( const Arguments& args ) {
 
 	Local<String> topic = args[0]->ToString();
 
-	for ( int i = 0, length = obs->observers.size(); i<length; i++ ) {
-		if ( topic == obs->observers[i].topic ) {
-		
-			char test [10];
+	for ( std::vector<Observer>::iterator i = obs->observers.begin(); i != obs->observers.end(); i++ ) {
+		if ( topic == i->topic ) {
 
-			topic->WriteAscii( test, 0, topic->Length() );
-			std::cout << test << "==";
-			obs->observers[i].topic->WriteAscii( test, 0, topic->Length() );
-			std::cout << test << "\n";
+			const unsigned argc = 1;
+			Local<Value> argv[argc] = { Local<Value>::New( args[1]) };
+			i->callback->Call(Context::GetCurrent()->Global(), argc, argv);
 
 		}
 	}
