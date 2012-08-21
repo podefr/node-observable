@@ -46,6 +46,10 @@ Handle<Value> Observable::subscribe( const Arguments& args ) {
 	observer.topic = Persistent<String>::New(args[0]->ToString());
 	observer.callback = Persistent<Function>::New( Local<Function>::Cast(args[1]) );
 
+	if (!args[2]->IsUndefined()) {
+		observer.thisObject = Persistent<Object>::New( args[2]->ToObject() );
+	}
+
 	obs->observers.push_back( observer );
 
 	return scope.Close( Undefined() );
@@ -63,7 +67,7 @@ Handle<Value> Observable::publish( const Arguments& args ) {
 
 			const unsigned argc = 1;
 			Local<Value> argv[argc] = { Local<Value>::New( args[1]) };
-			i->callback->Call(Context::GetCurrent()->Global(), argc, argv);
+			i->callback->Call(i->thisObject, argc, argv);
 
 		}
 	}

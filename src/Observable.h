@@ -9,6 +9,7 @@ using namespace v8;
 struct Observer {
 	Persistent<String> topic;
 	Persistent<Function> callback;
+	Persistent<Object> thisObject;
 };
 
 class Observable: public node::ObjectWrap {
