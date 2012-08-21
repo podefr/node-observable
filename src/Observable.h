@@ -1,6 +1,7 @@
 #ifndef OBSERVABLE_H
 #define OBSERVABLE_H
 
+#include <string>
 #include <node.h>
 #include <vector>
 
@@ -25,6 +26,11 @@ class Observable: public node::ObjectWrap {
 		static Handle<Value> New(const Arguments&);
 		static Handle<Value> publish(const Arguments&);
 		static Handle<Value> subscribe(const Arguments&);
+		static Handle<Value> unsubscribe(const Arguments&);
+		static Handle<Value> hasObserver(const Arguments&);
+
+		static Handle<Boolean> hasObserver_(std::vector<Observer>, Local<String>, Local<Function>);
+		static Handle<Boolean> hasObserver_(std::vector<Observer>, Local<String>, Local<Function>, Local<Object>);
 
 };
 

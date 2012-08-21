@@ -16,11 +16,15 @@ void Observable::Init( Handle<Object> target ) {
 	Local<String> name = String::NewSymbol( "Observable" );
 
 	tpl->SetClassName( name );
-	tpl->InstanceTemplate()->SetInternalFieldCount( 2 );
+	tpl->InstanceTemplate()->SetInternalFieldCount( 4 );
 	tpl->PrototypeTemplate()->Set(String::NewSymbol( "subscribe" ),
 		FunctionTemplate::New(subscribe)->GetFunction());
 	tpl->PrototypeTemplate()->Set(String::NewSymbol( "publish" ),
 		FunctionTemplate::New(publish)->GetFunction());
+	tpl->PrototypeTemplate()->Set(String::NewSymbol( "unsubscribe" ),
+		FunctionTemplate::New(unsubscribe)->GetFunction());
+	tpl->PrototypeTemplate()->Set(String::NewSymbol( "hasObserver" ),
+		FunctionTemplate::New(hasObserver)->GetFunction());
 
 	constructor = Persistent<Function>::New(tpl->GetFunction());
 	target->Set(name, constructor);
@@ -91,3 +95,60 @@ Handle<Value> Observable::publish( const Arguments& args ) {
 
 	return scope.Close( Undefined() );
 }
+
+Handle<Value> Observable::unsubscribe( const Arguments& args ) {
+	HandleScope scope;
+
+
+
+	return scope.Close( Undefined() );
+}
+
+Handle<Value> Observable::hasObserver( const Arguments& args ) {
+	HandleScope scope;
+
+	Handle<Boolean> ret;
+	Observable* obs = ObjectWrap::Unwrap<Observable>( args.This() );
+
+	if (args.Length() == 2) {
+		ret = Observable::hasObserver_(obs->observers, args[0]->ToString(), Local<Function>::Cast( args[1] ));
+	}
+
+	if (args.Length() == 3) {
+		ret = Observable::hasObserver_(obs->observers, args[0]->ToString(), Local<Function>::Cast( args[1] ), args[2]->ToObject());
+	}
+
+	return scope.Close( ret );
+}
+
+Handle<Boolean> Observable::hasObserver_(std::vector<Observer> observers, Local<String> topic, Local<Function> callback) {
+	Handle<Boolean> hasObserver = False();
+
+	for ( std::vector<Observer>::iterator i = observers.begin(); i != observers.end(); i++ ) {
+		if ( topic == i->topic
+				&& callback == i->callback
+				&& Context::GetCurrent()->Global() == i->thisObject) {
+
+			hasObserver = True();
+		}
+	}
+
+	return hasObserver;
+}
+
+Handle<Boolean> Observable::hasObserver_(std::vector<Observer> observers, Local<String> topic, Local<Function> callback, Local<Object> thisObject) {
+	Handle<Boolean> hasObserver = False();
+
+	for ( std::vector<Observer>::iterator i = observers.begin(); i != observers.end(); i++ ) {
+		if ( topic == i->topic
+				&& callback == i->callback
+				&& thisObject == i->thisObject) {
+
+			hasObserver = True();
+		}
+	}
+
+	return hasObserver;
+}
+
+
