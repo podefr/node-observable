@@ -107,48 +107,27 @@ Handle<Value> Observable::unsubscribe( const Arguments& args ) {
 Handle<Value> Observable::hasObserver( const Arguments& args ) {
 	HandleScope scope;
 
-	Handle<Boolean> ret;
+	Handle<Boolean> return_ = False();
 	Observable* obs = ObjectWrap::Unwrap<Observable>( args.This() );
 
-	if (args.Length() == 2) {
-		ret = Observable::hasObserver_(obs->observers, args[0]->ToString(), Local<Function>::Cast( args[1] ));
+	Local<String> topic = args[0]->ToString();
+	Local<Function> callback = Local<Function>::Cast( args[1] );
+	Local<Object> thisObject;
+
+	if (args[2]->IsObject()) {
+		thisObject = args[2]->ToObject();
+	} else {
+		thisObject = Context::GetCurrent()->Global();
 	}
 
-	if (args.Length() == 3) {
-		ret = Observable::hasObserver_(obs->observers, args[0]->ToString(), Local<Function>::Cast( args[1] ), args[2]->ToObject());
-	}
-
-	return scope.Close( ret );
-}
-
-Handle<Boolean> Observable::hasObserver_(std::vector<Observer> observers, Local<String> topic, Local<Function> callback) {
-	Handle<Boolean> hasObserver = False();
-
-	for ( std::vector<Observer>::iterator i = observers.begin(); i != observers.end(); i++ ) {
-		if ( topic == i->topic
-				&& callback == i->callback
-				&& Context::GetCurrent()->Global() == i->thisObject) {
-
-			hasObserver = True();
-		}
-	}
-
-	return hasObserver;
-}
-
-Handle<Boolean> Observable::hasObserver_(std::vector<Observer> observers, Local<String> topic, Local<Function> callback, Local<Object> thisObject) {
-	Handle<Boolean> hasObserver = False();
-
-	for ( std::vector<Observer>::iterator i = observers.begin(); i != observers.end(); i++ ) {
+	for ( std::vector<Observer>::iterator i = obs->observers.begin(); i != obs->observers.end(); i++ ) {
 		if ( topic == i->topic
 				&& callback == i->callback
 				&& thisObject == i->thisObject) {
 
-			hasObserver = True();
+			return_ = True();
 		}
 	}
 
-	return hasObserver;
+	return scope.Close( return_ );
 }
-
-
