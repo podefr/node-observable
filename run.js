@@ -21,6 +21,8 @@ observable.subscribe("notcalled", function () {
 
 observable.publish("topic1");
 
-console.log("hey", observable.hasObserver("topic1", func, obj));
+console.log("hey", observable.unsubscribe("topic1", func, obj));
+
+observable.publish("topic1");
 
 

@@ -99,9 +99,31 @@ Handle<Value> Observable::publish( const Arguments& args ) {
 Handle<Value> Observable::unsubscribe( const Arguments& args ) {
 	HandleScope scope;
 
+	Handle<Boolean> return_ = False();
+	Observable* obs = ObjectWrap::Unwrap<Observable>( args.This() );
 
+	Local<String> topic = args[0]->ToString();
+	Local<Function> callback = Local<Function>::Cast( args[1] );
+	Local<Object> thisObject;
 
-	return scope.Close( Undefined() );
+	if (args[2]->IsObject()) {
+		thisObject = args[2]->ToObject();
+	} else {
+		thisObject = Context::GetCurrent()->Global();
+	}
+
+	for ( std::vector<Observer>::iterator i = obs->observers.begin(); i != obs->observers.end(); i++ ) {
+		if ( topic == i->topic
+				&& callback == i->callback
+				&& thisObject == i->thisObject) {
+
+			obs->observers.erase(i);
+		
+			return_ = True();
+		}
+	}
+
+	return scope.Close( return_ );
 }
 
 Handle<Value> Observable::hasObserver( const Arguments& args ) {
