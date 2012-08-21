@@ -1,18 +1,21 @@
 var Observable = require("./build/Release/Observable").Observable,
 	observable = new Observable;
 
-// observable.subscribe("hi", function() {
-// 	console.log("hi called!", "!!");
-// });
 var obj = {
 	property: "hi"
 };
 
-observable.subscribe("coucou", function() {
-	//console.log("coucou called!", this, arguments, "!!");
-	console.log(this.property);
+observable.subscribe("topic1", function() {
+	console.log("topic1 called");
+});
+
+observable.subscribe("topic1", function () {
+	console.log("topic1 called with object", this, this.property);
 }, obj);
 
+observable.subscribe("notcalled", function () {
 
-observable.publish("coucou");
+});
+
+observable.publish("topic1");
 

@@ -43,11 +43,28 @@ Handle<Value> Observable::subscribe( const Arguments& args ) {
 
 	Observer observer;
 
-	observer.topic = Persistent<String>::New(args[0]->ToString());
-	observer.callback = Persistent<Function>::New( Local<Function>::Cast(args[1]) );
+	if ( !args[0]->IsString() ) {
+		return ThrowException( Exception::TypeError(
+            	String::New( "First argument to subscribe must be a string" ) 
+            )
+        );
+	} else {
+		observer.topic = Persistent<String>::New( args[0]->ToString() );
+	}
 
-	if (!args[2]->IsUndefined()) {
+	if ( !args[1]->IsFunction() ) {
+		return ThrowException( Exception::TypeError(
+            	String::New( "Second argument to subscribe must be a function" )
+            )
+        );
+	} else {
+		observer.callback = Persistent<Function>::New( Local<Function>::Cast(args[1]) );
+	}
+
+	if ( args[2]->IsObject() ) {
 		observer.thisObject = Persistent<Object>::New( args[2]->ToObject() );
+	} else {
+		observer.thisObject = Persistent<Object>::New( Context::GetCurrent()->Global() );
 	}
 
 	obs->observers.push_back( observer );
