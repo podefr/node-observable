@@ -10,7 +10,8 @@ Observable::~Observable() {};
 
 Persistent<Function> constructor;
 
-void Observable::Init( Handle<Object> target ) {
+void
+Observable::Init( Handle<Object> target ) {
 
 	Local<FunctionTemplate> tpl = FunctionTemplate::New( New );
 	Local<String> name = String::NewSymbol( "Observable" );
@@ -18,20 +19,21 @@ void Observable::Init( Handle<Object> target ) {
 	tpl->SetClassName( name );
 	tpl->InstanceTemplate()->SetInternalFieldCount( 4 );
 	tpl->PrototypeTemplate()->Set(String::NewSymbol( "subscribe" ),
-		FunctionTemplate::New(subscribe)->GetFunction());
+		FunctionTemplate::New(Subscribe)->GetFunction());
 	tpl->PrototypeTemplate()->Set(String::NewSymbol( "publish" ),
-		FunctionTemplate::New(publish)->GetFunction());
+		FunctionTemplate::New(Publish)->GetFunction());
 	tpl->PrototypeTemplate()->Set(String::NewSymbol( "unsubscribe" ),
-		FunctionTemplate::New(unsubscribe)->GetFunction());
+		FunctionTemplate::New(Unsubscribe)->GetFunction());
 	tpl->PrototypeTemplate()->Set(String::NewSymbol( "hasObserver" ),
-		FunctionTemplate::New(hasObserver)->GetFunction());
+		FunctionTemplate::New(HasObserver)->GetFunction());
 
 	constructor = Persistent<Function>::New(tpl->GetFunction());
 	target->Set(name, constructor);
 
 }
 
-Handle<Value> Observable::New( const Arguments& args ) {
+Handle<Value>
+Observable::New( const Arguments& args ) {
 	HandleScope scope;
 
 	Observable * obj = new Observable;
@@ -40,7 +42,8 @@ Handle<Value> Observable::New( const Arguments& args ) {
 	return args.This();
 }
 
-Handle<Value> Observable::subscribe( const Arguments& args ) {
+Handle<Value>
+Observable::Subscribe( const Arguments& args ) {
 	HandleScope scope;
 
 	Observable* obs = ObjectWrap::Unwrap<Observable>( args.This() );
@@ -76,7 +79,8 @@ Handle<Value> Observable::subscribe( const Arguments& args ) {
 	return scope.Close( Undefined() );
 }
 
-Handle<Value> Observable::publish( const Arguments& args ) {
+Handle<Value>
+Observable::Publish( const Arguments& args ) {
 	HandleScope scope;
 
 	Observable* obs = ObjectWrap::Unwrap<Observable>( args.This() );
@@ -97,7 +101,8 @@ Handle<Value> Observable::publish( const Arguments& args ) {
 
 }
 
-Handle<Value> Observable::unsubscribe( const Arguments& args ) {
+Handle<Value>
+Observable::Unsubscribe( const Arguments& args ) {
 	HandleScope scope;
 
 	Handle<Boolean> return_ = False();
@@ -113,7 +118,7 @@ Handle<Value> Observable::unsubscribe( const Arguments& args ) {
 		thisObject = Context::GetCurrent()->Global();
 	}
 
-	std::vector<Observer>::iterator* iterator = getObserver( &obs->observers, topic, callback, thisObject );
+	std::vector<Observer>::iterator* iterator = GetObserver( &obs->observers, topic, callback, thisObject );
 
 	if (iterator) {
 		obs->observers.erase(*iterator);
@@ -123,7 +128,8 @@ Handle<Value> Observable::unsubscribe( const Arguments& args ) {
 	return scope.Close( return_ );
 }
 
-Handle<Value> Observable::hasObserver( const Arguments& args ) {
+Handle<Value>
+Observable::HasObserver( const Arguments& args ) {
 	HandleScope scope;
 
 	Handle<Boolean> return_ = False();
@@ -139,7 +145,7 @@ Handle<Value> Observable::hasObserver( const Arguments& args ) {
 		thisObject = Context::GetCurrent()->Global();
 	}
 
-	std::vector<Observer>::iterator* iterator = getObserver( &obs->observers, topic, callback, thisObject );
+	std::vector<Observer>::iterator* iterator = GetObserver( &obs->observers, topic, callback, thisObject );
 
 	if (iterator) {
 		return_ = True();
@@ -148,7 +154,8 @@ Handle<Value> Observable::hasObserver( const Arguments& args ) {
 	return scope.Close( return_ );
 }
 
-std::vector<Observer>::iterator* Observable::getObserver( std::vector<Observer>* observers,
+std::vector<Observer>::iterator*
+Observable::GetObserver( std::vector<Observer>* observers,
 			const Local<String> topic,
 			const Local<Function> callback,
 			const Local<Object> thisObject ) {

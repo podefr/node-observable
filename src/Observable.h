@@ -23,16 +23,16 @@ class Observable: public node::ObjectWrap {
 
 		std::vector<Observer> observers;
 
-		static Handle<Value> New(const Arguments&);
-		static Handle<Value> publish(const Arguments&);
-		static Handle<Value> subscribe(const Arguments&);
-		static Handle<Value> unsubscribe(const Arguments&);
-		static Handle<Value> hasObserver(const Arguments&);
+		static Handle<Value> New( const Arguments& );
+		static Handle<Value> Publish( const Arguments& );
+		static Handle<Value> Subscribe( const Arguments& );
+		static Handle<Value> Unsubscribe( const Arguments& );
+		static Handle<Value> HasObserver( const Arguments& );
 
-		static std::vector<Observer>::iterator* getObserver( std::vector<Observer>*, 
-			const Local<String>,
-			const Local<Function>,
-			const Local<Object> );
+		static std::vector<Observer>::iterator* GetObserver( 	std::vector<Observer>*, 
+																const Local<String>,
+																const Local<Function>,
+																const Local<Object> );
 		
 };
 
