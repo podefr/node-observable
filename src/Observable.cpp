@@ -94,6 +94,7 @@ Handle<Value> Observable::publish( const Arguments& args ) {
 	}
 
 	return scope.Close( Undefined() );
+
 }
 
 Handle<Value> Observable::unsubscribe( const Arguments& args ) {
@@ -112,15 +113,11 @@ Handle<Value> Observable::unsubscribe( const Arguments& args ) {
 		thisObject = Context::GetCurrent()->Global();
 	}
 
-	for ( std::vector<Observer>::iterator i = obs->observers.begin(); i != obs->observers.end(); i++ ) {
-		if ( topic == i->topic
-				&& callback == i->callback
-				&& thisObject == i->thisObject) {
+	std::vector<Observer>::iterator* iterator = getObserver( &obs->observers, topic, callback, thisObject );
 
-			obs->observers.erase(i);
-		
-			return_ = True();
-		}
+	if (iterator) {
+		obs->observers.erase(*iterator);
+		return_ = True();
 	}
 
 	return scope.Close( return_ );
@@ -142,14 +139,31 @@ Handle<Value> Observable::hasObserver( const Arguments& args ) {
 		thisObject = Context::GetCurrent()->Global();
 	}
 
-	for ( std::vector<Observer>::iterator i = obs->observers.begin(); i != obs->observers.end(); i++ ) {
+	std::vector<Observer>::iterator* iterator = getObserver( &obs->observers, topic, callback, thisObject );
+
+	if (iterator) {
+		return_ = True();
+	}
+
+	return scope.Close( return_ );
+}
+
+std::vector<Observer>::iterator* Observable::getObserver( std::vector<Observer>* observers,
+			const Local<String> topic,
+			const Local<Function> callback,
+			const Local<Object> thisObject ) {
+
+	std::vector<Observer>::iterator* iteratorToReturn = 0;
+
+	for (  std::vector<Observer>::iterator i = observers->begin(); i != observers->end(); i++ ) {
 		if ( topic == i->topic
 				&& callback == i->callback
 				&& thisObject == i->thisObject) {
 
-			return_ = True();
+			iteratorToReturn = &i;
+
 		}
 	}
 
-	return scope.Close( return_ );
+	return iteratorToReturn;
 }

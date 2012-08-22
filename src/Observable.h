@@ -28,6 +28,11 @@ class Observable: public node::ObjectWrap {
 		static Handle<Value> subscribe(const Arguments&);
 		static Handle<Value> unsubscribe(const Arguments&);
 		static Handle<Value> hasObserver(const Arguments&);
+
+		static std::vector<Observer>::iterator* getObserver( std::vector<Observer>*, 
+			const Local<String>,
+			const Local<Function>,
+			const Local<Object> );
 		
 };
 
