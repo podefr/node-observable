@@ -36,7 +36,7 @@ Handle<Value>
 Observable::New( const Arguments& args ) {
 	HandleScope scope;
 
-	Observable * obj = new Observable;
+	Observable * obj = new Observable();
 	obj->Wrap( args.This() );
 
 	return args.This();
@@ -162,7 +162,7 @@ Observable::GetObserver( std::vector<Observer>* observers,
 
 	std::vector<Observer>::iterator* iteratorToReturn = 0;
 
-	for (  std::vector<Observer>::iterator i = observers->begin(); i != observers->end(); i++ ) {
+	for (  std::vector<Observer>::iterator i = observers->begin(); i != observers->end(); ++i ) {
 		if ( topic == i->topic
 				&& callback == i->callback
 				&& thisObject == i->thisObject) {

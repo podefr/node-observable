@@ -16,11 +16,10 @@ struct Observer {
 class Observable: public node::ObjectWrap {
 	public:
 		static void Init(Handle<Object>);
+		Observable();
+		virtual ~Observable();
 
 	private:
-		Observable();
-		~Observable();
-
 		std::vector<Observer> observers;
 
 		static Handle<Value> New( const Arguments& );
