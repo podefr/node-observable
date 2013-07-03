@@ -12,6 +12,7 @@
  	"binding.gyp",
  	"package.json",
  	"LICENSE",
+ 	"node-observable",
  	"src"
  ],
  "author": "Olivier Scherrer <pode.fr@gmail.com>",
