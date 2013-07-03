@@ -1,0 +1,32 @@
+{
+ "name": "yapsl",
+ "description": "Yet another fancy publish subscribe library, written in C++",
+ "version": "1.0.0",
+ "homepage": "http://podefr.github.com/node-observable/",
+ "licenses": [{
+  "type":"MIT",
+  "url":"https://raw.github.com/podefr/node-observable/master/LICENSE"
+ }],
+ "files": [
+ 	"README.md",
+ 	"binding.gyp",
+ 	"package.json",
+ 	"src"
+ ],
+ "author": "Olivier Scherrer <pode.fr@gmail.com>",
+ "keywords": ["publish", "subscribe", "Observable", "C++", "lol"],
+ "repository": {
+  "type": "git",
+  "url": "git@github.com:podefr/node-observable.git"
+ },
+ "bugs": {
+  "url": "https://github.com/podefr/node-observable/issues"
+ },
+ "main":"node-observable",
+ "engines": {
+ 	"node":">= 0.10.0"
+ },
+ "scripts": {
+ 	"install": "node-gyp clean build"
+ }
+}
