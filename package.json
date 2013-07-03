@@ -11,6 +11,7 @@
  	"README.md",
  	"binding.gyp",
  	"package.json",
+ 	"LICENSE",
  	"src"
  ],
  "author": "Olivier Scherrer <pode.fr@gmail.com>",
@@ -25,8 +26,5 @@
  "main":"node-observable",
  "engines": {
  	"node":">= 0.10.0"
- },
- "scripts": {
- 	"install": "node-gyp clean build"
  }
 }
