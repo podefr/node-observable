@@ -87,7 +87,7 @@ Observable::Publish( const Arguments& args ) {
 
 	Local<String> topic = args[0]->ToString();
 
-	for ( std::vector<Observer>::iterator i = obs->observers.begin(); i != obs->observers.end(); i++ ) {
+	for ( std::vector<Observer>::iterator i = obs->observers.begin(); i != obs->observers.end(); ++i ) {
 		if ( topic == i->topic ) {
 
 			const unsigned argc = 1;
